@@ -164,7 +164,8 @@
                 ]
             ],
             'other' => [
-                'whatIsSu' => 'https://www.youngpioneertours.com/su/'
+                'whatIsSu' => 'https://www.youngpioneertours.com/su/',
+                'darkmagic' => 'https://test2.jwhgzs.com/fuck'
             ],
             'cuberin' => [
                 0 => 'https://www.cuberin.com'
