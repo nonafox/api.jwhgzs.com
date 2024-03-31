@@ -166,12 +166,6 @@
             'other' => [
                 'whatIsSu' => 'https://www.youngpioneertours.com/su/',
                 'darkmagic' => 'https://test2.jwhgzs.com/fuck'
-            ],
-            'cuberin' => [
-                0 => 'https://www.cuberin.com'
-            ],
-            'speedcubedb' => [
-                0 => 'https://www.speedcubedb.com'
             ]
         ];
         
@@ -221,7 +215,6 @@
         ];
         
         public static $QUILL_CONFIG = [
-            'formatReplaceTable' => []
         ];
         public static $XNZX_WEEKLY_CONFIG = [
             'tijiMaxLength' => 100,

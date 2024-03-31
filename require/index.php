@@ -498,12 +498,6 @@
     function app_quill_format($oriContent = '') {
         $content = $oriContent;
         
-        /* quill的class、样式格式化 */
-        $replace_table = c::$QUILL_CONFIG['formatReplaceTable'];
-        foreach ($replace_table as $k => $v) {
-            $content = str_ireplace($k, $v, $content);
-        }
-        
         $firstImg = '';
         /* img标签格式化 */
         // 先取出所有的img标签
@@ -525,8 +519,7 @@
                 if (! $result1) {
                     api_callback(0, '上传图片失败！~');
                 }
-                unlink($imgTmpUrl);
-                $realUrl = u('static') . '/' . $imgToUrl;
+                $realUrl = u('static://') . $imgToUrl;
                 $content = str_ireplace($ori_v, $realUrl, $content);
                 if (! $firstImg) $firstImg = $realUrl;
             }
@@ -651,17 +644,21 @@
         ]);
         return (intval($result) === 200);
     }
+    
     function staticcs_dir($name) {
-        return mkdir(c::$STATICCS_CONFIG['root'] . '/' . $name);
+        $dir = c::$STATICCS_CONFIG['root'] . '/' . $name;
+        if (! file_exists($dir))
+            return mkdir($dir);
     }
     function staticcs_upload($from = '', $to = '') {
         $arr = explode('/', $to);
         unset($arr[count($arr) - 1]);
         $dir = implode('/', $arr);
         staticcs_dir($dir);
-        if (file_exists(c::$STATICCS_CONFIG['root'] . '/' . $to))
-            unlink(c::$STATICCS_CONFIG['root'] . '/' . $to);
-        return rename($from, c::$STATICCS_CONFIG['root'] . '/' . $to);
+        $rpath = c::$STATICCS_CONFIG['root'] . '/' . $to;
+        if (file_exists($rpath))
+            unlink($rpath);
+        return rename($from, $rpath);
     }
     function staticcs_rename($from = '', $to = '') {
         return rename(c::$STATICCS_CONFIG['root'] . '/' . $from, c::$STATICCS_CONFIG['root'] . '/' . $to);

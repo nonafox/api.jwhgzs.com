@@ -8,3 +8,4 @@ Requires the following steps to finish deployment:
 
 - install `Fileinfo` extension
 - set pseudo-static rules according to `pseudo-static.txt`
+- ensure all cross-site protections disabled
