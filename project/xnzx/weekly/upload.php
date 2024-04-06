@@ -56,6 +56,7 @@
         
         $ftable = c::$XNZX_WEEKLY_CONFIG['basicFormatter'];
         function formatRow($row, $isTitle = false) {
+            global $ftable;
             /* 基础格式化（暴力正则替换） */
             $row = preg_replace('/\\s{1,}/iu', ' ', $row);
             $row = trim($row);
@@ -63,7 +64,7 @@
                 $row = str_ireplace($k, $v, $row);
             }
             // 坑死了，类似这种正则匹配、替换一定要加上/u修饰符，以支持utf-8，不然会出现一堆莫名其妙的错误
-            // *** 注意！！这里的代码顺序不能乱改，否则会出问题
+            // *** 注意！！这里的代码有严密的逻辑特性，顺序不能乱改
             if (! $isTitle)
                 $row = preg_replace('/[\\.·。]{2,}/u', '……', $row);
             else
@@ -82,12 +83,16 @@
                 if (mb_strlen($row) > $k + 1) $next = $chars[$k + 1];
                 else $next = null;
                 // 非小数用的英文点号替换为句号
+                // 对于应是小数点号的符号格式化
                 if (intval($v) || $v == '0' || strtolower($v) == 'x') {
                     $seriesNum ++;
                 } else {
                     $nextIsNum = (intval($next) || $next == '0' || $next == 'x');
                     if ($v == '.' && (! ($seriesNum && $nextIsNum))) {
                         $chars[$k] = '。';
+                    }
+                    elseif (preg_match('/[\\.·。]/u', $v) && $seriesNum && $nextIsNum) {
+                        $chars[$k] = '.';
                     }
                     $seriesNum = 0;
                 }

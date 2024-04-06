@@ -4,22 +4,22 @@
     list($uid, $json) = app_check('x', [], 1, true);
     if ($json['id'])
         list($uid, $json) = app_check('vs', [], 1, true);
-    else if ($json['cid'])
+    else if ($json['sid'])
         list($uid, $json) = app_check('v', [], 1, true);
     
     if ($json['id']) {
         $data = sql_query1('SELECT year, class, term, num, note, nameInvisible FROM xnzx_weekly WHERE id = ?', [$json['id']]);
         $year = $data['year'];
         $list = sql_query('SELECT author, title, tiji, content, houji FROM xnzx_weekly_article WHERE parentId = ? AND status >= 1 ORDER BY postTime DESC', [$json['id']]);
-        $fname = $year . ' 秋届 ' . $data['class'] . ' 班 ' . $data['term'] . ' 第 ' . $data['num'] . ' 期 ' . $data['note'] . ' 班级周报';
-    } else if ($json['cid']) {
+        $fname = $year . '秋届' . $data['class'] . '班 ' . $data['term'] . ' 第' . $data['num'] . '期 ' . $data['note'] . ' 班级周报';
+    } else if ($json['sid']) {
         $year = $json['year'];
         $data = sql_query('SELECT id FROM xnzx_weekly WHERE year = ? AND class = ?', [$year, $json['class']]);
         $arr = [];
         foreach ($data as $v)
             $arr[] = $v['id'];
-        $list = sql_query('SELECT author, title, tiji, content, houji FROM xnzx_weekly_article WHERE parentId IN (\'' . implode('\', \'', $arr) . '\') AND author = ? AND status >= 1 ORDER BY postTime DESC', [$json['cid']]);
-        $fname = app_xnzx_sid2name($year, $json['class'], $json['cid'])[1] . ' 班级周报投稿汇总';
+        $list = sql_query('SELECT author, title, tiji, content, houji FROM xnzx_weekly_article WHERE parentId IN (\'' . implode('\', \'', $arr) . '\') AND author = ? AND status >= 1 ORDER BY postTime DESC', [$json['sid']]);
+        $fname = app_xnzx_sid2name($year, $json['class'], $json['sid'])[1] . ' 班级周报投稿汇总';
         $data = null;
     }
     
@@ -28,12 +28,12 @@
     $html = '';
     $html .= <<<CONTENT
         <div style="color: gray; font-family: 黑体; text-align: center;">
-            本文档由jwhgzs.com自动生成~
+            本文档由 jwhgzs.com 自动生成~
         </div>
         <br/>
 CONTENT;
     foreach ($list as $v) {
-        $name = app_xnzx_sid2name($year, $data ? $data['class'] : $json['class'], $data ? $v['author'] : $json['cid'])[1];
+        $name = app_xnzx_sid2name($year, $data ? $data['class'] : $json['class'], $data ? $v['author'] : $json['sid'])[1];
         $author = ($data['nameInvisible'] ? '' : $name);
         $title = htmlspecialchars($v['title']);
         $tiji = htmlspecialchars($v['tiji']);

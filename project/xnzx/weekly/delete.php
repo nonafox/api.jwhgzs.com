@@ -3,10 +3,10 @@
     
     list($uid, $json) = app_check('vas', ['id'], 1);
     
-    if (! sql_exec_count('DELETE FROM xnzx_weekly WHERE id = ? LIMIT 1', [intval($json['id'])])) {
+    if (sql_query_count('SELECT id FROM xnzx_weekly_article WHERE parentId = ?', [intval($json['id'])]) && ! sql_exec_count('DELETE FROM xnzx_weekly_article WHERE parentId = ?', [intval($json['id'])])) {
         api_callback(0, '操作数据失败！~');
     }
-    if (! sql_exec_count('DELETE FROM xnzx_weekly_article WHERE parentId = ?', [intval($json['id'])])) {
+    if (! sql_exec_count('DELETE FROM xnzx_weekly WHERE id = ? LIMIT 1', [intval($json['id'])])) {
         api_callback(0, '操作数据失败！~');
     }
     

@@ -237,16 +237,16 @@
                 '∽' => '~',
                 '<<' => '《',
                 '>>' => '》'
-            ]
+            ],
+            'terms' => ['七上', '七下', '八上', '八下', '九上', '九下']
         ];
         public static $XNZX_PA_CONFIG = [
-            'classes' => [ 2020 => [ 11 ] ],
-            'maxSortPeople' => 10
+            'classes' => [ 2020 => [ 11 ] ]
         ];
         public static $FORUM_CONFIG = [
-            'classifies' => [ '官方区', '首页区', '意见反馈区', '吹水区', '新宁足球冠军联赛区' ],
+            'classifies' => ['官方区', '首页区', '意见反馈区', '吹水区', '新宁足球冠军联赛区'],
             'defaultClassifyId' => 3,
-            'adminClassifyIds' => [ 0, 1, 4 ],
+            'adminClassifyIds' => [0, 1, 4],
             'carouselClassifyId' => 1
         ];
     }
