@@ -5,8 +5,9 @@
     
     $data = sql_query('SELECT * FROM shortUrl ORDER BY id DESC');
     foreach ($data as $k => $v) {
-        $data[$k]['ori_url'] = $data[$k]['url'];
-        $data[$k]['url'] = u($data[$k]['url']);
+        $data[$k]['url'] = $data[$k]['url'];
+        $data[$k]['resolved_url'] = u($data[$k]['url']);
+        $data[$k]['resolved'] = $data[$k]['url'] != $data[$k]['resolved_url'];
     }
     
     api_callback(1, '', ['urlList' => $data]);
