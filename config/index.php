@@ -190,7 +190,7 @@
                 'local://xnzx',
                 'local://forum',
                 'local://xfcl',
-                'shortUrl://'
+                'shortUrlPortal://'
             ]
         ];
         public static $CONTACT_INF = [
