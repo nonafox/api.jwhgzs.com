@@ -258,6 +258,9 @@
     function http_prosi($url = '', $data = [], $header = [], $cookie = []) {
         echo(http($url, $data, $header, $cookie, false));
     }
+    function http_locate() {
+        return 'http' . ($_SERVER['HTTPS'] == 'on' ? 's' : '') . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+    }
     
     function api_input($isGET = false) {
         if (! $isGET)
