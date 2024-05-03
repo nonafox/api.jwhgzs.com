@@ -1,8 +1,6 @@
 <?php
-    
-    function text_url2host($url = '') {
-        return strtolower(explode('/', $url)[2]);
-    }
+
+    error_reporting(0);
     
     /* 公共处理 */
     // 跨域检测，参考：https://www.gxlcms.com/PHPjiqiao-375366.html
@@ -59,10 +57,6 @@
         if (count($arr) != 4) return '未知IP';
         if (! $hide) return $ip;
         return $arr[0] . '.*.' . $arr[2] . '.' . $arr[3];
-    }
-    function text_format_dir($dir = '') {
-        if (! $dir) return '/';
-        return preg_replace('/\\/+/iu', '/', $dir);
     }
     function text_random($dig = 16) {
         $str = 'abcdefghijklmnopqrstuvwxyz0123456789';

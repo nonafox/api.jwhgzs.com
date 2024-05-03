@@ -1,8 +1,14 @@
 <?php
     class c {
         public static $ROUTER = [
-            'api\.jwhgzs\.com' => [
+            'api.jwhgzs.com' => [
                 0 => '/$'
+            ],
+            'jwh.su' => [
+                0 => '/shortUrl/?tag=$'
+            ],
+            '*.jwh.su' => [
+                0 => '/shortUrl/?tag=$'
             ]
         ];
         
@@ -57,6 +63,9 @@
             ],
             'shortUrl' => [
                 0 => 'https://jwh.su'
+            ],
+            'shortUrlPortal' => [
+                0 => 'https://portal.jwh.su'
             ],
             'static' => [
                 0 => 'https://static.jwhgzs.com',
