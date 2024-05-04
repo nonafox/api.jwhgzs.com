@@ -2,13 +2,16 @@
     class c {
         public static $ROUTER = [
             'api.jwhgzs.com' => [
-                0 => '/$'
+                0 => '/$',
+                '/sitemap/[site]' => [
+                    0 => '/sitemap?site=${site}'
+                ]
             ],
-            'jwh.su' => [
-                0 => '/shortUrl/?tag=$'
-            ],
-            '*.jwh.su' => [
-                0 => '/shortUrl/?tag=$'
+            'jwh.su|*.jwh.su' => [
+                0 => '/shortUrl',
+                '/[tag]' => [
+                    0 => '/shortUrl?tag=${tag}'
+                ]
             ]
         ];
         

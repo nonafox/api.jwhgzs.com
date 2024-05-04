@@ -10,38 +10,108 @@
         return rtrim(trim(preg_replace('/\\/+/iu', '/', $dir)), '/');
     }
     
-    function __pregMatch($pattern = '', $str = '') {
-        return preg_match('/^' . str_ireplace('\\*', '[^\\.]+', preg_quote($pattern, '/')) . '$/iu', $str);
+    function __pregQuote($pattern = '', $delimiter = '/') {
+        return preg_replace_callback(
+            '/[\\.\\\\\\+\\*\\?\\^\\$\\(\\)\\{\\}\\=\\!\\<\\>\\|\\:\\-\\#\\' . $delimiter . ']/u',
+            function ($matches) {
+                return '\\' . $matches[0];
+            },
+            $pattern
+        );
+    }
+    function __pregMatch($pattern = '', $str = '', &$dict = [], $pathmode = false) {
+        global $__keys, $__pathmode;
+        $__keys = [];
+        $__pathmode = $pathmode;
+        $pattern = preg_replace('/\\s/u', '', $pattern);
+        $pattern = __pregQuote($pattern, '/');
+        $pattern = preg_replace_callback(
+            '/\\[(.+?)\\]/iu',
+            function ($matches) {
+                global $__keys, $__pathmode;
+                $__keys[] = $matches[1][0];
+                return $__pathmode ? '(.+?)' : '([^\\.]+?)';
+            },
+            $pattern,
+            -1, $_count,
+            PREG_OFFSET_CAPTURE
+        );
+        $pattern = str_ireplace('\\*', $pathmode ? '(.+?)' : '([^\\.]+?)', $pattern);
+        $res = preg_match('/^' . $pattern . '$/iu', $str, $matches, PREG_OFFSET_CAPTURE);
+        if (! $res)
+            return false;
+        array_splice($matches, 0, 1);
+        foreach ($matches as $k => $v) {
+            $dict[$__keys[$k]] = $v[0];
+        }
+        unset($__keys);
+        unset($__pathmode);
+        return true;
+    }
+    function __dictReplace($dict = [], $str = '', $urlencode = false) {
+        global $__dict;
+        $__dict = $dict;
+        $res = preg_replace_callback(
+            '/\\$\\{(.+?)\\}/iu',
+            function ($matches) {
+                global $__dict;
+                $key = $matches[1][0];
+                if ($urlencode)
+                    return urlencode($__dict[$key]);
+                else
+                    return $__dict[$key];
+            },
+            $str,
+            -1, $_count,
+            PREG_OFFSET_CAPTURE
+        );
+        unset($__dict);
+        return $res;
     }
     function __parseUrl($dir = '', $host = '') {
         $table = c::$ROUTER;
+        $dict = [];
         $domain = strtolower($host);
         $match = null;
-        foreach ($table as $k => $v) {
-            if (__pregMatch($k, $domain)) {
-                $match = $v;
-                foreach ($v as $k2 => $v2) {
-                    if ($k2 !== 0 && __pregMatch($k2, $dir)) {
-                        $match = $v2;
-                        break;
+        foreach ($table as $k_ => $v) {
+            $k_ = explode('|', $k_);
+            $ok = false;
+            foreach ($k_ as $k) {
+                if (__pregMatch($k, $domain, $dict)) {
+                    $match = $v;
+                    foreach ($v as $k2_ => $v2) {
+                        if (! is_string($k2_)) continue;
+                        $k2_ = explode('|', $k2_);
+                        $ok2 = false;
+                        foreach ($k2_ as $k2) {
+                            if (__pregMatch($k2, $dir, $dict, true)) {
+                                $match = $v2;
+                                $ok2 = true;
+                                break;
+                            }
+                        }
+                        if ($ok2) break;
                     }
+                    $ok = true;
+                    break;
                 }
-                break;
             }
+            if ($ok) break;
         }
         if ($match === null)
             return false;
-        $router = '' . $match[0];
+        $template = '' . $match[0];
         $model = $match[1] ? $match[1] : 'default';
         
-        $parts = explode('?', $router);
+        $parts = explode('?', $template);
         $res = $parts[0];
         $params = $parts[1];
+        $res = __dictReplace($dict, $res);
+        $params = __dictReplace($dict, $params, true);
         $res = str_ireplace('$', $dir, $res);
         $params = str_ireplace('$', urlencode($dir), $params);
         $base = __DIR__ . '/project/';
         $base2 = __DIR__ . '/model/' . $model . '/';
-        $static = file_exists($base2 . 'static.set');
         $paths = [];
         $paths[] = $base . $res;
         $paths[] = $base . $res . '.php';
