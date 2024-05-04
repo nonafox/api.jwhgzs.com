@@ -7,7 +7,7 @@
                     0 => '/sitemap?site=${site}'
                 ]
             ],
-            'jwh.su|*.jwh.su' => [
+            'jwh.su|www.jwh.su' => [
                 0 => '/shortUrl',
                 '/[tag]' => [
                     0 => '/shortUrl?tag=${tag}'
