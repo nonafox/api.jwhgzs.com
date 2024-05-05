@@ -51,11 +51,11 @@
                     if (! $matches[1])
                         return false;
                     else
-                        return date('Y/m/d', strtotime($matches[1][0]));
+                        return date('Y/m/d', strtotime($matches[1]));
                 }
-                else {
-                    die($res);
-                }
+                // else {
+                //     die($res);
+                // }
             }
             elseif ($server === false) {
                 if ($ext == '.to') {
@@ -64,7 +64,7 @@
                     if (! $matches[1])
                         return false;
                     else
-                        return date('Y/m/d', strtotime($matches[1][0]));
+                        return date('Y/m/d', strtotime($matches[1]));
                 }
             }
             die('后缀不支持！');
