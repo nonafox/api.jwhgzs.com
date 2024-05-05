@@ -7,5 +7,6 @@
             $list[] = $v . $v2;
         }
     }
-    file_put_contents('list.json', json_encode($list));
+    
+    file_put_contents('aim.json', json_encode(['list' => $list, 'ext' => '.to']));
 ?>

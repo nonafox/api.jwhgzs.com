@@ -1,34 +1,92 @@
 <?php
     
-    if ($_GET['name']) {
-        function request($url) {
-            $res = http(
-                'https://www.tonic.to/renewcustform1.htm?' . strtoupper(text_random(8, true)) . ';;;',
-                'command=sldrenewal&sld=' . $url . '&B1.x=0&B1.y=0'
-            );
-            preg_match('/' . preg_quote('<font color="#003366" size="4" face="Arial">', '/') . '\\s*(.+?)\\s*' . preg_quote('</font>', '/') . '/ims',  $res, $matches, PREG_OFFSET_CAPTURE);
-            $note = preg_replace('/[\\s]+/', ' ', $matches[1][0]);
-            $note = explode('<br>', $note);
-            $note[0] = trim($note[0]);
-            $note[1] = trim($note[1]);
-            
-            if (! ($note[0] || $note[1]))
-                return false;
-            else
-                return date('Y/m/d', strtotime($note[1]));
+    include_once './WHOIS_server_list/list.php';
+    
+    $no_date_exts = [
+        '.gg', '.je'
+    ];
+    $ugly_whois_exts = [
+        '.to'
+    ];
+    foreach ($ugly_whois_exts as $v)
+        $whois_servers[$v] = false;
+    $standard_exts = [
+        '.sh' => 'Registry Expiry Date:',
+        '.im' => 'The domain', 'Expiry Date:',
+        '.ws' => 'Registrar Registration Expiration Date:',
+        '.st' => 'Expiration Date:',
+        
+    ];
+    
+    $name = $_GET['name'];
+    $ext = $_GET['ext'];
+    
+    if ($name) {
+        function request() {
+            global $whois_servers, $standard_exts, $name, $ext;
+            $server = $whois_servers[$ext];
+            if ($server) {
+                $out = $name . $ext . "\r\n";
+                $out .= "Connection: Close\r\n\r\n";
+                $socket = fsockopen($server, 43, $errno, $errstr, 30);
+                if (! $socket){
+                    echo $errstr;
+                    die;
+                }
+                fputs($socket, $out);
+                $res = '';
+                while (! feof($socket))
+                    $res .= nl2br(fgets($socket, 255));
+                fclose($socket);
+                
+                if ($ext == '.gg' || $ext == '.je') {
+                    if (preg_match('/^' . preg_quote('NOT FOUND') . '/ims', $res))
+                        return false;
+                    else
+                        return date('Y') . '/12/01';
+                }
+                elseif ($standard_exts[$ext]) {
+                    $prefix = $standard_exts[$ext];
+                    preg_match('/^' . preg_quote($prefix, '/') . '\\s+(.+?)\\s*' . preg_quote('<br') . '/ims', $res, $matches);
+                    if (! $matches[1])
+                        return false;
+                    else
+                        return date('Y/m/d', strtotime($matches[1][0]));
+                }
+                else {
+                    die($res);
+                }
+            }
+            elseif ($server === false) {
+                if ($ext == '.to') {
+                    $res = http('https://www.tonic.to/whois?' . $name . $ext);
+                    preg_match('/^' . preg_quote('Expires on:', '/') . '\\s+(.+?)$/ims', $res, $matches);
+                    if (! $matches[1])
+                        return false;
+                    else
+                        return date('Y/m/d', strtotime($matches[1][0]));
+                }
+            }
+            die('后缀不支持！');
         }
         
-        $res = request($_GET['name'] . '.to');
+        $res = request();
         if ($res) {
-            if (strtotime($res) <= time()) {
-                $res = '<strong>' . $res . '</strong>';
-                $strong = true;
+            if ($res == '1970/01/01') {
+                $res = '注册局保留域名';
+            }
+            else {
+                if (strtotime($res) <= time()) {
+                    $res = '<strong>' . $res . '</strong>';
+                    $strong = true;
+                }
+                $res = (in_array($ext, $no_date_exts) ? '估计过期时间：' : '过期时间：') . $res;
             }
         }
         else {
-            $res = '<strong>可注册！！！</strong>';
+            $res = '<strong>♥♥♥可注册♥♥♥</strong>';
         }
-        die(($strong ? '<!--*-->' : '') . '<li><strong>' . $_GET['name'] . '.to</strong>：' . ($res ? '过期时间：' . $res : '<strong>可注册！！！</strong>') . '</li>');
+        die(($strong ? '<!--*-->' : '') . '<li><strong>' . $name . $ext . '</strong>：' . $res . '</li>');
     }
 ?>
 
@@ -74,12 +132,14 @@
                     async restore() {
                         this.list = JSON.parse(localStorage.getItem('20240505_list') || '[]')
                         this.a = this.list.length
-                        this.aim_list = JSON.parse(await request('list.json'))
+                        const aim = JSON.parse(await request('aim.json'))
+                        this.aim_list = aim.list
+                        this.aim_ext = aim.ext
                         this.b = this.aim_list.length
                     },
                     async go() {
                         while (this.status && this.a < this.b) {
-                            let v = await request('?name=' + this.aim_list[this.a])
+                            let v = await request('?name=' + this.aim_list[this.a] + '&ext=' + this.aim_ext)
                             if (v.indexOf('<!--*-->') == 0)
                                 this.list.splice(0, 0, v)
                             else
@@ -95,10 +155,9 @@
                     },
                     clear_() {
                         const time = new Date().valueOf()
-                        if (prompt('若要清空数据请输入“' + time + '”以确认：') == time) {
+                        if (confirm('确定要清空数据吗？')) {
                             localStorage.setItem('20240505_list', '')
-                            this.list = []
-                            alert('清空数据成功！')
+                            this.restore()
                         }
                     }
                 }
