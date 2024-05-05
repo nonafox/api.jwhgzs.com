@@ -58,8 +58,8 @@
         if (! $hide) return $ip;
         return $arr[0] . '.*.' . $arr[2] . '.' . $arr[3];
     }
-    function text_random($dig = 16) {
-        $str = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    function text_random($dig = 16, $md5mode = false) {
+        $str = $md5mode ? 'abcdef0123456789' : 'abcdefghijklmnopqrstuvwxyz0123456789';
         $res = '';
         for ($i = 0; $i < $dig; $i ++) {
             $res .= $str[rand(0, strlen($str) - 1)];

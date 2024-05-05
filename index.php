@@ -148,11 +148,13 @@
     $__host = $_SERVER['HTTP_HOST'];
     $__urlData = __parseUrl($__url, $__host);
     $__model_url = __DIR__ . '/model/' . $__urlData['model'];
+    chdir(__DIR__ . '/model');
+    __handleParams($__urlData['params']);
     include_once $__model_url . '/head.php';
     $finfo = finfo_open(FILEINFO_MIME);
     $mime = finfo_file($finfo, $__urlData['url']);
     if (pathinfo($__urlData['url'])['extension'] == 'php') {
-        __handleParams($__urlData['params']);
+        chdir(pathinfo($__urlData['url'])['dirname']);
         include_once $__urlData['url'];
     }
     else {
@@ -160,5 +162,6 @@
         echo(file_get_contents($__urlData['url']));
     }
     finfo_close($finfo);
+    chdir(__DIR__ . '/model');
     include_once $__model_url . '/tail.php';
 ?>
