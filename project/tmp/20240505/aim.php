@@ -8,5 +8,5 @@
         }
     }
     
-    file_put_contents('aim.json', json_encode(['list' => $list, 'ext' => '.to']));
+    file_put_contents('aim.json', json_encode(['list' => $list, 'ext' => '.su']));
 ?>

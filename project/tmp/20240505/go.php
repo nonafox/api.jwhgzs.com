@@ -15,6 +15,7 @@
         '.im' => 'The domain', 'Expiry Date:',
         '.ws' => 'Registrar Registration Expiration Date:',
         '.st' => 'Expiration Date:',
+        '.su' => 'free-date:',
         
     ];
     
@@ -85,6 +86,7 @@
         }
         else {
             $res = '<strong>♥♥♥可注册♥♥♥</strong>';
+            $strong = true;
         }
         die(($strong ? '<!--*-->' : '') . '<li><strong>' . $name . $ext . '</strong>：' . $res . '</li>');
     }
