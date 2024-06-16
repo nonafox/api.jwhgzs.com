@@ -79,7 +79,7 @@
                     ],
                     'img' => [
                         0 => '/img',
-                        'logo_banner' => '/jwh/logo/banner_xuekao.svg?v=1',
+                        'logo_banner' => '/jwh/logo/banner_blue.svg?v=1',
                         'logo_ico' => '/jwh/logo/logo.ico?v=1',
                         'beian_icon' => '/beian_icon.png?v=1',
                         'sponsor_canva' => '/sponsors_logo/canva.svg?v=1',
