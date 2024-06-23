@@ -169,11 +169,7 @@
                 ]
             ],
             'node_modules' => [
-                0 => '/_nuxt/node_modules',
-                'quill' => [
-                    'js' => '/quill-jwhgzs-edited/dist/quill.min.js?v=5',
-                    'css' => '/quill-jwhgzs-edited/dist/quill.snow.css?v=5'
-                ]
+                0 => '/_nuxt/node_modules'
             ],
             'other' => [
                 'whatIsSu' => 'https://www.youngpioneertours.com/su/',
@@ -223,7 +219,7 @@
             'verifyCodeExpTime' => 60 * 10 * 1000
         ];
         public static $STATICCS_CONFIG = [
-            'root' => '/www/wwwroot/static_jwhgzs_com'
+            'root' => '/www/wwwroot/static.jwhgzs.com'
         ];
         
         public static $QUILL_CONFIG = [

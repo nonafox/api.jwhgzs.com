@@ -48,15 +48,15 @@
         unset($__pathmode);
         return true;
     }
-    function __dictReplace($dict = [], $str = '', $urlencode = false) {
+    function __dictReplace($dict = [], $str = '', $url_encode = false) {
         global $__dict;
         $__dict = $dict;
         $res = preg_replace_callback(
             '/\\$\\{(.+?)\\}/iu',
             function ($matches) {
-                global $__dict;
+                global $__dict, $url_encode;
                 $key = $matches[1][0];
-                if ($urlencode)
+                if ($url_encode)
                     return urlencode($__dict[$key]);
                 else
                     return $__dict[$key];
@@ -101,11 +101,11 @@
         if ($match === null)
             return false;
         $template = '' . $match[0];
-        $model = $match[1] ? $match[1] : 'default';
+        $model = $match[1] ?: 'default';
         
         $parts = explode('?', $template);
         $res = $parts[0];
-        $params = $parts[1];
+        $params = $parts[1] ?: '';
         $res = __dictReplace($dict, $res);
         $params = __dictReplace($dict, $params, true);
         $res = str_ireplace('$', $dir, $res);
@@ -138,6 +138,8 @@
         return false;
     }
     function __handleParams($params = '') {
+        if (! $params)
+            return;
         foreach (explode('&', $params) as $v) {
             $parts = explode('=', $v);
             $_GET[urldecode($parts[0])] = urldecode($parts[1]);

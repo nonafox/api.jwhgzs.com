@@ -1,6 +1,6 @@
 <?php
 
-    error_reporting(0);
+    // error_reporting(0);
     
     /* 公共处理 */
     // 跨域检测，参考：https://www.gxlcms.com/PHPjiqiao-375366.html
