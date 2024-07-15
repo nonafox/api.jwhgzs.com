@@ -70,6 +70,9 @@
             'shortUrlPortal' => [
                 0 => 'https://portal.jwh.su'
             ],
+            'tzy' => [
+                0 => 'https://www.tzy.su'
+            ],
             'static' => [
                 0 => 'https://static.jwhgzs.com',
                 'public' => [
