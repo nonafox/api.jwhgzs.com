@@ -102,6 +102,7 @@
                         'link_xnzx_PA' => '/links_banner/xnzx/PA.svg?v=5',
                         'link_xfcl' => '/links_banner/xfcl.svg?v=5',
                         'link_admin' => '/links_banner/admin.svg?v=5',
+                        'link_tzy' => '/links_banner/tzy.svg?v=1',
                         'xfcl_logo' => '/jwh/logo/xfcl_logo.png?v=1',
                         'xfcl_banner' => '/jwh/logo/xfcl_banner.png?v=2',
                         'comp_lquot' => '/components/lquot.svg?v=1',
@@ -109,6 +110,10 @@
                         'comp_rquot' => '/components/rquot.svg?v=1',
                         'comp_rquot_white' => '/components/rquot_white.svg?v=1',
                         'cuberin_logo' => '/cuberin/logo/logo.svg?v=1',
+                        'tzy_banner' => '/tzy/banner.svg?v=1',
+                        'tzy_bible' => '/tzy/links/bible.svg?v=2',
+                        'tzy_cards' => '/tzy/links/cards.svg?v=2',
+                        'tzy_memories' => '/tzy/links/memories.svg?v=2',
                         'PA' => [
                             0 => '/PA'
                         ]
@@ -176,7 +181,10 @@
             ],
             'other' => [
                 'whatIsSu' => 'https://www.youngpioneertours.com/su/',
-                'darkmagic' => 'https://test2.jwhgzs.com/fuck'
+                'darkmagic' => 'https://test2.jwhgzs.com/fuck',
+                'doc_cards' => 'https://p.kdocs.cn/s/2WRKMBQANA',
+                'doc_memories' => 'https://p.kdocs.cn/s/FCR2MBQA2U',
+                'doc_bible' => 'https://p.kdocs.cn/s/4HF2MBQANA'
             ]
         ];
         

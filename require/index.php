@@ -35,9 +35,11 @@
             $res = $res[$v];
             if (is_array($res) && $res[0]) {
                 $result .= $res[0];
-            } elseif ($res && (! is_array($res))) {
+            }
+            elseif ($res && (! is_array($res))) {
                 $result .= $res;
-            } elseif (! $res) {
+            }
+            elseif (! $res) {
                 $result .= '/' . $v;
             }
         }
@@ -155,7 +157,8 @@
                 $tmp = [];
                 $tmp[$v] = $arr[$v];
                 $sameVal = $arr[$v][$key];
-            } else {
+            }
+            else {
                 $tmp[$v] = $arr[$v];
             }
         }
@@ -184,7 +187,8 @@
             $psm = $_sql_pdo -> prepare($sql);
             $psm -> execute($param);
             return $psm;
-        } catch (Exception $ex) {
+        }
+        catch (Exception $ex) {
             api_callback(0, '操作数据库失败了呢~' /* . $ex -> getMessage() */ );
         }
     }
