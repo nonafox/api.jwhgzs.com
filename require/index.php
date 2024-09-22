@@ -671,8 +671,10 @@
         $res = [];
         $obj = opendir(c::$STATICCS_CONFIG['root'] . '/' . $url);
         while (($v = readdir($obj)) !== false){
-            if ($v != '.' && $v != '..')
-                $res[] = ['name' => $v, 'type' => is_dir(c::$STATICCS_CONFIG['root'] . '/' . $url . '/' . $v), 'size' => filesize(c::$STATICCS_CONFIG['root'] . '/' . $url . '/' . $v)];
+            if ($v != '.' && $v != '..') {
+                $dir = c::$STATICCS_CONFIG['root'] . '/' . $url . '/' . $v;
+                $res[] = ['name' => $v, 'type' => is_dir($dir), 'size' => filesize($dir), 'time' => filemtime($dir) * 1000];
+            }
         }
         return $res;
     }

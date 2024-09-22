@@ -3,7 +3,7 @@
     
     list($uid, $json, $file) = app_check('x');
     
-    $list = staticcs_list(u('static_user://tmp/20230813'));
+    $list = arr_sort(staticcs_list(u('static_user://tmp/20230813')), 'time', true);
     foreach ($list as $k => $v) {
         $list[$k]['url'] = u('static://user/tmp/20230813') . '/' . $v['name'];
     }
