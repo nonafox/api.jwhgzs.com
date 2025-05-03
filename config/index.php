@@ -18,7 +18,7 @@
         public static $MAIN_SERVER = 'https://www.jwhgzs.com';
         public static $STATIC_SERVER = 'https://static.jwhgzs.com';
         public static $JSCOOKIE_MAINDOMAIN = '.jwhgzs.com';
-        public static $UPLOAD_SIZELIMIT = 1024 * 1024 * 50;
+        public static $UPLOAD_SIZELIMIT = 1024 * 1024 * 300;
         public static $USER_EDITABLESQLKEYS = [
             'pass', 'selfIntroduce'
         ];
