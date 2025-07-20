@@ -94,7 +94,7 @@
                         'sponsor_ym163com' => '/sponsors_logo/ym163com.svg?v=5',
                         'sponsor_regery' => '/sponsors_logo/regery.svg?v=5',
                         'bkg' => '/bkg.svg?v=2',
-                        'bkg2' => '/bkg2.jpg?v=1',
+                        'bkg2' => '/bkg2.jpg?v=2',
                         'link_xnzx' => '/links_banner/xnzx.svg?v=5',
                         'link_forum' => '/links_banner/forum.svg?v=5',
                         'link_shortUrl' => '/links_banner/shortUrl.svg?v=5',
