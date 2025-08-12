@@ -190,7 +190,7 @@
         
         public static $INF = [
             'year_from' => '2020',
-            'year_to' => '2024'
+            'year_to' => '2025'
         ];
         public static $SEO_INF = [
             'desc' => '九尾狐工作室，数学、编程、魔方高手云集之地~',
